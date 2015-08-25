@@ -19,6 +19,8 @@ from collections import namedtuple
 import requests
 import re
 
+import urllib
+
 # CONSTANTS
 class BASE(object):
     domain='kat.cr'
@@ -144,7 +146,6 @@ class SearchUrl(Url):
         """
         Build and return url. Also update max_page.
         """
-        ret = self.base + self.query
         page = "".join(("/", str(self.page), "/"))
 
         if self.category:
@@ -157,7 +158,7 @@ class SearchUrl(Url):
         else:
             order = ""
 
-        ret = "".join((self.base, self.query, category, page, order))
+        ret = "".join((self.base, urllib.quote_plus(self.query), category, page, order))
 
         if update:
             self.max_page = self._get_max_page(ret)
